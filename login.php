@@ -2,8 +2,10 @@
 session_start();
 require_once 'config/koneksi.php';
 
+$error = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'];
+    $email = trim($_POST['email']);
     $password = $_POST['password'];
 
     $q = mysqli_query($conn, "SELECT * FROM user WHERE email='$email'");
@@ -15,16 +17,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: dashboard.php');
         exit;
     } else {
-        $error = 'Login gagal';
+        $error = "Email atau password salah!";
     }
 }
 ?>
-<form method="post">
-    <input type="email" name="email" placeholder="Email" required><br>
-    <input type="password" name="password" placeholder="Password" required><br>
-    <button type="submit">Login</button>
-</form>
 
-"Belum punya akun? <a href='register.php'>Register dulu</a>";
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="container">
+    <h2>Login</h2>
 
-<?php if (!empty($error)) echo $error; ?>
+    <?php if ($error): ?><div class="alert error"><?= $error ?></div><?php endif; ?>
+
+    <form method="post" class="form-box">
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Masuk</button>
+        <p class="link">Belum punya akun? <a href="register.php">Daftar di sini</a></p>
+    </form>
+</div>
+</body>
+<div class="footer">
+  <p>Dibuat oleh Amba</p>
+</div>
+</html>

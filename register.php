@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $konfirmasi = $_POST['konfirmasi'];
 
-    // Validasi
     if (empty($nama) || empty($email) || empty($password) || empty($konfirmasi)) {
         $error = "Semua field harus diisi!";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -18,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($password !== $konfirmasi) {
         $error = "Konfirmasi password tidak cocok!";
     } else {
-        // Cek apakah email sudah ada
         $cek = mysqli_query($conn, "SELECT * FROM user WHERE email='$email'");
         if (mysqli_num_rows($cek) > 0) {
             $error = "Email sudah terdaftar!";
@@ -36,14 +34,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<h2>Registrasi Akun</h2>
-<?php if ($error): ?><p style="color:red"><?= $error ?></p><?php endif; ?>
-<?php if ($success): ?><p style="color:green"><?= $success ?></p><?php endif; ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registrasi</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="container">
+    <h2>Registrasi Akun</h2>
 
-<form method="post">
-    <input type="text" name="nama" placeholder="Nama Lengkap" required><br>
-    <input type="email" name="email" placeholder="Email Aktif" required><br>
-    <input type="password" name="password" placeholder="Password" required><br>
-    <input type="password" name="konfirmasi" placeholder="Konfirmasi Password" required><br>
-    <button type="submit">Daftar</button>
-</form>
+    <?php if ($error): ?><div class="alert error"><?= $error ?></div><?php endif; ?>
+    <?php if ($success): ?><div class="alert success"><?= $success ?></div><?php endif; ?>
+
+    <form method="post" class="form-box">
+        <input type="text" name="nama" placeholder="Nama Lengkap" required>
+        <input type="email" name="email" placeholder="Email Aktif" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" name="konfirmasi" placeholder="Konfirmasi Password" required>
+        <button type="submit">Daftar</button>
+        <p class="link">Sudah punya akun? <a href="login.php">Login di sini</a></p>
+    </form>
+</div>
+</body>
+</html>
