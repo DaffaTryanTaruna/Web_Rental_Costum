@@ -24,4 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <input type="password" name="password" placeholder="Password" required><br>
     <button type="submit">Login</button>
 </form>
+
+"Belum punya akun? <a href='register.php'>Register dulu</a>";
+
 <?php if (!empty($error)) echo $error; ?>
