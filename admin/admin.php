@@ -45,6 +45,38 @@ if (isset($_GET['hapus'])) {
 
 // Ambil Data kostum
 $kostum = mysqli_query($conn, "SELECT * FROM kostum");
+
+// Edit kostum
+$edit_data = null;
+if (isset($_GET['edit'])) {
+    $id_edit = $_GET['edit'];
+    $result_edit = mysqli_query($conn, "SELECT * FROM kostum WHERE id = $id_edit");
+    if (mysqli_num_rows($result_edit) == 1) {
+        $edit_data = mysqli_fetch_assoc($result_edit);
+    }
+}
+
+if (isset($_POST['update'])) {
+    $id = $_POST['id'];
+    $nama = $_POST['nama_kostum'];
+    $harga = $_POST['harga'];
+
+    if ($_FILES['gambar']['name']) {
+        $gambar = $_FILES['gambar']['name'];
+        $tmp = $_FILES['gambar']['name'];
+        $gambar_baru = uniqid() . '_' . $gambar;
+        move_uploaded_file($tmp, '../uploads/' . $gambar_baru);
+
+        $query = "UPDATE kostum SET nama_kostum='$nama', harga='$harga', gambar='$gambar_baru' WHERE id=$id";
+    } else {
+        $query = "UPDATE kostum SET nama_kostum='$nama', harga='$harga' WHERE id=$id";
+    }
+
+    $result = mysqli_query($conn, $query);
+    header("Location: admin.php");
+    exit;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -63,11 +95,21 @@ $kostum = mysqli_query($conn, "SELECT * FROM kostum");
             echo "<p class='alert success'>$pesan</p>"; ?>
 
         <form method="post" enctype="multipart/form-data" class="form-box">
-            <input type="text" name="nama_kostum" placeholder="Nama Kostum" required>
-            <input type="number" name="harga" placeholder="Harga / Hari" required>
-            <input type="file" name="gambar" required>
-            <button type="submit" name="tambah">Tambah kostum</button>
+            <input type="hidden" name="id" value="<?= $edit_data['id'] ?? '' ?>">
+            <input type="text" name="nama_kostum" placeholder="Nama Kostum"
+                value="<?= $edit_data['nama_kostum'] ?? '' ?>" required>
+            <input type="number" name="harga" placeholder="Harga / Hari" value="<?= $edit_data['harga'] ?? '' ?>"
+                required>
+            <input type="file" name="gambar" <?= isset($edit_data) ? '' : 'required' ?>>
+            <?php if (isset($edit_data)): ?>
+                <p><small>Abaikan file jika tidak ingin mengganti gambar.</small></p>
+                <button type="submit" name="update">Update Kostum</button>
+                <a href="admin.php">Batal</a>
+            <?php else: ?>
+                <button type="submit" name="tambah">Tambah Kostum</button>
+            <?php endif; ?>
         </form>
+
 
         <h3>Daftar kostum</h3>
         <table border="1" cellpadding="8" cellspacing="0" width="100%">
@@ -89,7 +131,11 @@ $kostum = mysqli_query($conn, "SELECT * FROM kostum");
                         <?php endif; ?>
                     </td>
 
-                    <td><a href="?hapus=<?= $row['id'] ?>" onclick="return confirm('Hapus kostum ini?')">Hapus</a></td>
+                    <td>
+                        <a href="?edit=<?= $row['id'] ?>">Edit</a> |
+                        <a href="?hapus=<?= $row['id'] ?>" onclick="return confirm('Hapus kostum ini?')">Hapus</a>
+                    </td>
+
                 </tr>
             <?php endwhile; ?>
         </table>
