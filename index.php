@@ -1,41 +1,67 @@
+
 <?php
 require_once 'config/database.php';
-$kostum = $conn->query("SELECT k.*, c.nama_kategori FROM kostum k 
-                        LEFT JOIN kategori c ON k.kategori_id = c.id 
-                        WHERE k.status = 'tersedia'");
+
+// Ambil semua data kostum
+$query = "SELECT * FROM kostum";
+$result = mysqli_query($conn, $query);
 ?>
 
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Rental Kostum</title>
-    <link rel="stylesheet" href="assets/css/style.css"> <!-- opsional -->
+    <title>Dashboard Rental Kostum</title>
+    <link rel="stylesheet" href="assets/style.css">
     <style>
-        body { font-family: Arial; padding: 20px; }
-        .kostum { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; width: 300px; display: inline-block; vertical-align: top; }
-        .kostum img { max-width: 100%; height: 200px; object-fit: cover; }
-        .topnav a { margin-right: 15px; }
+        .kostum-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .kostum-card {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            background-color: #fff;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .kostum-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .kostum-card h4 {
+            margin: 10px 0 5px;
+        }
+
+        .kostum-card p {
+            margin: 0;
+        }
     </style>
 </head>
+
 <body>
+    <?php include 'dashboard/header.php'; ?>
 
-<h1>Selamat Datang di Rental Kostum</h1>
-<div class="topnav">
-    <a href="auth/login.php">Login</a>
-    <a href="auth/register.php">Daftar</a>
-</div>
-
-<h2>Daftar Kostum Tersedia</h2>
-
-<?php while($k = $kostum->fetch_assoc()): ?>
-<div class="kostum">
-    <img src="assets/img/<?= $k['gambar'] ?>" alt="<?= $k['nama_kostum'] ?>">
-    <h3><?= $k['nama_kostum'] ?></h3>
-    <p>Kategori: <?= $k['nama_kategori'] ?></p>
-    <p>Harga: Rp <?= number_format($k['harga_per_hari']) ?>/hari</p>
-    <p>Stok: <?= $k['stok'] ?></p>
-</div>
-<?php endwhile; ?>
-
+    <div class="container">
+        <h2>Dashboard Produk Kostum</h2>
+        <div class="kostum-grid">
+            <?php while ($kostum = mysqli_fetch_assoc($result)): ?>
+                <div class="kostum-card">
+                    <img src="uploads/<?= $kostum['gambar'] ?>" alt="<?= $kostum['nama_kostum'] ?>">
+                    <h4><?= $kostum['nama_kostum'] ?></h4>
+                    <p>Harga: Rp<?= number_format($kostum['harga'], 0, ',', '.') ?>/hari</p>
+                </div>
+            <?php endwhile; ?>
+        </div>
+    </div>
 </body>
+
 </html>
+

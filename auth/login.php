@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else if($data['role']=="user"){
             $_SESSION['user'] = $data;
             $_SESSION['email'] = $email;
-            header("Location: ../dashboard/index.php");
+            header("Location: ../dashboard/user.php");
         }
         exit;
     } else {
