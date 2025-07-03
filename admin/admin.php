@@ -11,6 +11,7 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin']['role'] !== 'admin') {
 if (isset($_POST['tambah'])) {
     $nama = $_POST['nama_kostum'];
     $harga = $_POST['harga'];
+    $deskripsi = $_POST['deskripsi'];
     $gambar = $_FILES['gambar']['name'];
     $tmp = $_FILES['gambar']['tmp_name'];
 
@@ -19,8 +20,8 @@ if (isset($_POST['tambah'])) {
 
     // Pindahkan file ke folder uploads (folder berada di luar folder admin)
     if (move_uploaded_file($tmp, '../uploads/' . $gambar_baru)) {
-        $query = "INSERT INTO kostum (nama_kostum, harga, gambar) 
-                  VALUES ('$nama', '$harga', '$gambar_baru')";
+        $query = "INSERT INTO kostum (nama_kostum, harga, deskripsi, gambar) 
+                  VALUES ('$nama', '$harga', '$deskripsi', '$gambar_baru')";
 
         $result = mysqli_query($conn, $query);
 
@@ -60,6 +61,7 @@ if (isset($_POST['update'])) {
     $id = $_POST['id'];
     $nama = $_POST['nama_kostum'];
     $harga = $_POST['harga'];
+    $deskripsi = $_POST['deskripsi'];
 
     if ($_FILES['gambar']['name']) {
         $gambar = $_FILES['gambar']['name'];
@@ -67,9 +69,9 @@ if (isset($_POST['update'])) {
         $gambar_baru = uniqid() . '_' . $gambar;
         move_uploaded_file($tmp, '../uploads/' . $gambar_baru);
 
-        $query = "UPDATE kostum SET nama_kostum='$nama', harga='$harga', gambar='$gambar_baru' WHERE id=$id";
+        $query = "UPDATE kostum SET nama_kostum='$nama', harga='$harga', deskripsi='$deskripsi', gambar='$gambar_baru' WHERE id=$id";
     } else {
-        $query = "UPDATE kostum SET nama_kostum='$nama', harga='$harga' WHERE id=$id";
+        $query = "UPDATE kostum SET nama_kostum='$nama', harga='$harga', deskripsi='$deskripsi' WHERE id=$id";
     }
 
     $result = mysqli_query($conn, $query);
@@ -89,6 +91,7 @@ if (isset($_POST['update'])) {
 
 <body>
     <?php include '../views/layout/header.php'; ?>
+    <li><a href="transaksi.php">Kelola Transaksi</a></li>
     <div class="container">
         <h2>Kelola kostum (Kostum)</h2>
         <?php if (!empty($pesan))
@@ -100,6 +103,7 @@ if (isset($_POST['update'])) {
                 value="<?= $edit_data['nama_kostum'] ?? '' ?>" required>
             <input type="number" name="harga" placeholder="Harga / Hari" value="<?= $edit_data['harga'] ?? '' ?>"
                 required>
+            <textarea name="deskripsi" placeholder="Deskripsi Kostum" rows="4" required><?= $edit_data['deskripsi'] ?? '' ?></textarea>
             <input type="file" name="gambar" <?= isset($edit_data) ? '' : 'required' ?>>
             <?php if (isset($edit_data)): ?>
                 <p><small>Abaikan file jika tidak ingin mengganti gambar.</small></p>
@@ -117,6 +121,7 @@ if (isset($_POST['update'])) {
                 <th>ID</th>
                 <th>Nama</th>
                 <th>Harga</th>
+                <th>Deskripsi</th>
                 <th>Gambar</th>
                 <th>Aksi</th>
             </tr>
@@ -125,6 +130,7 @@ if (isset($_POST['update'])) {
                     <td><?= $row['id'] ?></td>
                     <td><?= $row['nama_kostum'] ?></td>
                     <td><?= $row['harga'] ?></td>
+                    <td><?= $row['deskripsi'] ?></td>
                     <td>
                         <?php if ($row['gambar']): ?>
                             <img src="../uploads/<?= $row['gambar'] ?>" width="60">

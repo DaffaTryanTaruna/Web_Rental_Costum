@@ -109,12 +109,15 @@ while ($row = mysqli_fetch_assoc($result)) {
 
         <div class="kostum-grid" id="kostumGrid">
             <?php foreach ($kostum_data as $kostum): ?>
-                <div class="kostum-card" data-nama="<?= strtolower($kostum['nama_kostum']) ?>">
-                    <img src="../uploads/<?= $kostum['gambar'] ?>" alt="<?= $kostum['nama_kostum'] ?>">
-                    <h4><?= $kostum['nama_kostum'] ?></h4>
-                    <p>Rp<?= number_format($kostum['harga'], 0, ',', '.') ?>/hari</p>
-                </div>
+                <a href="../views/kostum/detail.php?id=<?= $kostum['id'] ?>" style="text-decoration: none; color: inherit;">
+                    <div class="kostum-card" data-nama="<?= strtolower($kostum['nama_kostum']) ?>">
+                        <img src="../uploads/<?= $kostum['gambar'] ?>" alt="<?= $kostum['nama_kostum'] ?>">
+                        <h4><?= $kostum['nama_kostum'] ?></h4>
+                        <p>Rp<?= number_format($kostum['harga'], 0, ',', '.') ?>/hari</p>
+                    </div>
+                </a>
             <?php endforeach; ?>
+
         </div>
     </div>
 
