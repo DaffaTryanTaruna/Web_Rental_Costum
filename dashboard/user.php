@@ -18,12 +18,8 @@ while ($row = mysqli_fetch_assoc($result)) {
     <title>User - Dashboard Kostum</title>
     <link rel="stylesheet" href="../assets/style.css">
     <style>
-        :root {
-            --bg-main: #FFFADC;
-            --green-light: #B6F500;
-            --green-medium: #A4DD00;
-            --green-dark: #98CD00;
-            --text-dark: #333;
+        * {
+            box-sizing: border-box;
         }
 
         body {
@@ -41,41 +37,55 @@ while ($row = mysqli_fetch_assoc($result)) {
 
         h2 {
             color: var(--green-dark);
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 28px;
         }
 
         .search-box {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
+            position: relative;
+            border: 2px solid #B6F500;
+            /* atau gunakan var(--green-light) jika pakai variable */
+            border-radius: 10px;
+            /* opsional agar sudut lebih halus */
+            padding: 8px;
+            /* opsional agar isinya tidak terlalu mepet */
         }
+
 
         .search-box input {
             width: 100%;
-            padding: 12px;
+            padding: 12px 16px;
+            padding-right: 40px;
             border: 2px solid var(--green-light);
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 16px;
             outline: none;
+            background-color: var(--white);
         }
 
         .kostum-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
         }
 
         .kostum-card {
-            background-color: white;
-            border-radius: 12px;
+            background-color: var(--white);
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
             text-align: center;
-            transition: transform 0.2s ease;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
             border: 2px solid var(--green-medium);
-            height: 350px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .kostum-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-6px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
         .kostum-card img {
@@ -85,14 +95,25 @@ while ($row = mysqli_fetch_assoc($result)) {
         }
 
         .kostum-card h4 {
-            margin: 12px 0 6px;
+            margin: 16px 0 8px;
+            font-size: 18px;
             color: var(--green-dark);
         }
 
         .kostum-card p {
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             font-weight: bold;
             color: var(--text-dark);
+        }
+
+        @media (max-width: 600px) {
+            h2 {
+                font-size: 24px;
+            }
+
+            .kostum-card img {
+                height: 180px;
+            }
         }
     </style>
 </head>
@@ -104,7 +125,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         <h2>Dashboard Produk Kostum</h2>
 
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Cari nama kostum...">
+            <input type="text" id="searchInput" placeholder="🔍 Cari nama kostum...">
         </div>
 
         <div class="kostum-grid" id="kostumGrid">
@@ -117,7 +138,6 @@ while ($row = mysqli_fetch_assoc($result)) {
                     </div>
                 </a>
             <?php endforeach; ?>
-
         </div>
     </div>
 

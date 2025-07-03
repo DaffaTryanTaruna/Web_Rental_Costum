@@ -1,4 +1,3 @@
-
 <?php
 require_once 'config/database.php';
 
@@ -14,6 +13,40 @@ $result = mysqli_query($conn, $query);
     <title>Dashboard Rental Kostum</title>
     <link rel="stylesheet" href="assets/style.css">
     <style>
+        .hero-banner {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 30px;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-banner img {
+            width: 100%;
+            height: auto;
+            /* Tinggi mengikuti rasio gambar */
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 12px;
+        }
+
+
+        .hero-text {
+            position: absolute;
+            top: 75%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 45px;
+            font-weight: bold;
+            text-shadow: 2px 2px #000000;
+            text-align: center;
+        }
+
+
         .kostum-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -26,7 +59,7 @@ $result = mysqli_query($conn, $query);
             padding: 10px;
             text-align: center;
             background-color: #fff;
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .kostum-card img {
@@ -50,6 +83,11 @@ $result = mysqli_query($conn, $query);
     <?php include 'views/layout/header.php'; ?>
 
     <div class="container">
+        <div class="hero-banner">
+            <img src="assets/banner.jpg" alt="Banner Rental Kostum">
+            <div class="hero-text">TRANSFORMASI SEKEJAP <br> COSPLAY MAKSIMAL</div>
+        </div>
+
         <h2>Dashboard Produk Kostum</h2>
         <div class="kostum-grid">
             <?php while ($kostum = mysqli_fetch_assoc($result)): ?>
@@ -64,4 +102,3 @@ $result = mysqli_query($conn, $query);
 </body>
 
 </html>
-
