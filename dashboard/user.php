@@ -98,7 +98,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 </head>
 
 <body>
-    <?php include '../dashboard/header.php'; ?>
+    <?php include '../views/layout/header.php'; ?>
 
     <div class="container">
         <h2>Dashboard Produk Kostum</h2>

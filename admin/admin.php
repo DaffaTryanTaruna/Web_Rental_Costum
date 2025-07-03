@@ -88,7 +88,7 @@ if (isset($_POST['update'])) {
 </head>
 
 <body>
-    <?php include '../dashboard/header.php'; ?>
+    <?php include '../views/layout/header.php'; ?>
     <div class="container">
         <h2>Kelola kostum (Kostum)</h2>
         <?php if (!empty($pesan))
