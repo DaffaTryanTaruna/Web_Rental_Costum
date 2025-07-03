@@ -47,34 +47,46 @@ $result = mysqli_query($conn, $query);
         }
 
 
+        h2 {
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
         .kostum-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
         }
 
         .kostum-card {
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 10px;
-            text-align: center;
             background-color: #fff;
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .kostum-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
         .kostum-card img {
             width: 100%;
-            height: 200px;
+            height: 220px;
             object-fit: cover;
-            border-radius: 5px;
         }
 
         .kostum-card h4 {
-            margin: 10px 0 5px;
+            font-size: 20px;
+            margin: 15px 10px 5px;
         }
 
         .kostum-card p {
-            margin: 0;
+            margin: 0 10px 15px;
+            color: #777;
         }
     </style>
 </head>
@@ -96,6 +108,7 @@ $result = mysqli_query($conn, $query);
                     <h4><?= $kostum['nama_kostum'] ?></h4>
                     <p>Harga: Rp<?= number_format($kostum['harga'], 0, ',', '.') ?>/hari</p>
                 </div>
+
             <?php endwhile; ?>
         </div>
     </div>
